@@ -2,14 +2,6 @@
 ## bulkimport-v7
 
 
-
-## TO-DO LIST?
-# visualise pre-existing sites - check via web service?
-# Project member names - check via web service?
-# Horizon - needs to receive combined horizon description then break recognised parts
-
-
-
 library(shiny); packageVersion(pkg="shiny")
 library(leaflet)
 library(scales)
@@ -30,6 +22,12 @@ library(RColorBrewer)
 library(htmlwidgets)
 library(tools)
 library(htmltools)
+
+
+## TO-DO LIST?
+# visualise pre-existing sites - check via web service?
+# Project member names - check via web service?
+# Horizon - needs to receive combined horizon description then break recognised parts
 
 
 ### Variables
@@ -847,7 +845,7 @@ ui <- fluidPage(
     sidebarPanel(
       
 
-      p(h4("1. Import bulk data .XLSX\n(combined field & lab data)", style = "color:#225ea8")),
+      p(h4("1. Import bulk data .XLSX \n(field & lab data)", style = "color:#225ea8")),
       
       # Choose file
       fileInput('file1', label=strong('Choose file'),
@@ -865,15 +863,11 @@ ui <- fluidPage(
       ,br()
 
 
-      ,br()
-
-
-
       ## Downloads
       ,conditionalPanel(
         condition = "typeof output.downloadZip !== undefined",
         
-        p(h4("6. Export database-ready files", style = "color:#225ea8")),
+        p(h4("4. Export database-ready files", style = "color:#225ea8")),
         
         #p(h5("Email the downloaded zip file to your database administrator")),
         downloadButton(outputId='downloadZip',label="Export CSV files")
