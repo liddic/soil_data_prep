@@ -30,6 +30,47 @@ library(htmltools)
 # Horizon - needs to receive combined horizon description then break recognised parts
 
 
+# # # # # #
+
+### run temp directory for each shiny user...
+
+# Sys.time()  # e.g. "2016-06-21 21:29:07 ACST" --  Check time zone e.g. ' ACST' ????
+# Sys.timezone(location=FALSE) # "ACST"
+
+# pattern for replacement set-up of scratch directories
+pat <- paste0("-| | ",Sys.timezone(location=FALSE),"|:")
+
+nowTime <- as.numeric( gsub(x=Sys.time(),pattern=pat,replacement = "" ) )
+
+#mainDir <- "/scratch"
+mainDir <- getwd()
+subDir <- as.character(as.numeric( gsub(x=Sys.time(),pattern=pat,replacement = "" ) ))
+
+
+dir.create(file.path(mainDir, subDir),mode = "0777")
+setwd(file.path(mainDir, subDir))
+
+
+## clean-up old folders - from previous users
+check_dirs <- list.dirs(path=mainDir,full.names=FALSE,recursive=FALSE)
+
+# which correspond to numbers
+sel_num <- which( is.numeric(as.numeric(check_dirs)) == TRUE)
+check_dirs <- check_dirs[sel_num]
+
+if (length(check_dirs)>=1) {
+  check_dirs_HOWOLD <- nowTime - as.numeric(check_dirs)
+  sel.old <- which(check_dirs_HOWOLD > 450000)
+  # will delete scratch working directories older than 45 minutes
+  
+  # may need to change file permissions?
+  #Sys.chmod(paths=check_dirs[sel.old], mode = "0777", use_umask = TRUE)
+  unlink(file.path(mainDir, check_dirs[sel.old]), recursive=TRUE, force = TRUE)
+}
+
+# # # # # #
+
+
 ### Variables
 
 WGS84 <- "+proj=longlat +ellps=WGS84 +datum=WGS84 +no_defs"
